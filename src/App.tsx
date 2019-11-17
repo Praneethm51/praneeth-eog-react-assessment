@@ -2,12 +2,15 @@ import React from 'react';
 import createStore from './store';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
+import Dashboard from './components/Dashboard';
 
 const store = createStore();
 const theme = createMuiTheme({
@@ -24,15 +27,21 @@ const theme = createMuiTheme({
   },
 });
 
+const client: any = new ApolloClient({
+  uri: "https://48p1r2roz4.sse.codesandbox.io"
+});
+
 const App = () => (
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
     <Provider store={store}>
-      <Wrapper>
-        <Header />
-        <NowWhat />
-        <ToastContainer />
-      </Wrapper>
+      <ApolloProvider client={client}>
+        <Wrapper>
+          <Header />
+          <Dashboard />
+          <ToastContainer />
+        </Wrapper>
+      </ApolloProvider>
     </Provider>
   </MuiThemeProvider>
 );
