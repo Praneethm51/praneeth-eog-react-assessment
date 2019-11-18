@@ -11,6 +11,10 @@ const useStyles = makeStyles({
   card: {
     margin: '10px',
   },
+  metricsContainer: {
+    display: 'flex',
+    flexFlow: 'column wrap'
+  }
 });
 
 export default () => {
@@ -19,8 +23,10 @@ export default () => {
     <Card className={classes.card}>
       <CardHeader title="EOG Dashboard" />
       <CardContent>
-        <Metrics />
-        <Subscriptions />
+        <div className={classes.metricsContainer}>
+          <Metrics />
+          <Subscriptions />
+        </div>
         <Measurements />
       </CardContent>
     </Card>

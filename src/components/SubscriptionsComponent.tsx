@@ -7,7 +7,9 @@ const useStyles = makeStyles({
     flexFlow: 'row wrap',
     justifyContent: 'space-evenly',
     fontWeight: 'bold',
-    margin: '20px 0'
+    padding: '20px 0',
+    marginBottom: '15px',
+    border: '1px solid gray'
   },
 });
 

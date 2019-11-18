@@ -58,7 +58,7 @@ const Subscriptions = () => {
   const [res] = useSubscription({query: newMessages}, handleSubscription);
 
   if (!res.data) {
-    return <p>No new messages</p>;
+    return null;
   }
   latestMeasurementValues[res.data[0].metric] = res.data[0].value;
   const latestData: any = [];

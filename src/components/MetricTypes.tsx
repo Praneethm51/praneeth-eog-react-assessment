@@ -14,7 +14,7 @@ export default (props: any) => {
                     renderInput={params => (
                       <TextField
                         {...params}
-                        variant="outlined"
+                        variant="standard"
                         label="Select Metrics Types"
                         margin="normal"
                         fullWidth/>
