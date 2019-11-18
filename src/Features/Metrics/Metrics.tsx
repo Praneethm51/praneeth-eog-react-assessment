@@ -37,8 +37,6 @@ const Metrics = () => {
   });
 
   const onMetricTypesChange = (event: object, selectedMetrics: Array<string>) => {
-    console.log(event, "****", selectedMetrics);
-    console.log("dispatch metrics types changed");
     dispatch(actions.metricsTypesChanged(selectedMetrics));
   }
 

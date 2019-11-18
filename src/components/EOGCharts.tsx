@@ -5,7 +5,7 @@ const convertData = (measurements: Array<any>) => {
     const eachMeasObj: any = {};
     const total: any = [];
     const allMetrics: Array<string> = [];
-    (measurements && measurements.forEach((value, index, array) => {
+    (measurements && measurements.forEach((value) => {
         const meas = value.measurements;
         allMetrics.push(value.metric);
         meas.forEach((eachMeas: any, i: number) => {
@@ -17,7 +17,6 @@ const convertData = (measurements: Array<any>) => {
             }
             eachMeasObj[eachMeas.at][eachMeas.metric] = eachMeas.value;
         })
-        // return total;
     }));
 
     return [allMetrics, total];
@@ -38,8 +37,7 @@ export default (props: any) => {
             <YAxis/>
             <Tooltip/>
             <Legend />
-            {allMetrics.map((eachMetric: string) => <Line type="monotone" dataKey={eachMetric} dot={false} stroke={getRandomColor()}/>) }
-            {/* <Line type="monotone" dataKey="tubingPressure" stroke="#ff0000" dot={false}/> */}
+            {allMetrics.map((eachMetric: string) => <Line key={eachMetric} type="monotone" dataKey={eachMetric} dot={false} stroke={getRandomColor()}/>) }
     </LineChart>
     )
 

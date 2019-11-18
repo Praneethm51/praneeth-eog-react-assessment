@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from './reducer';
 import { Provider, createClient, useQuery } from 'urql';
@@ -39,20 +39,6 @@ export default () => {
   );
 };
 
-const usePrevious = (value: any):any => {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
-const compareMetrics = (prev: any, current: any) => {
-  if(prev === current) return true;
-  if(prev && current && prev.input && current && prev.input.length === current.length) return true;
-  return false;
-}
-
 const get30MinsBackTime = () => {
   return (new Date().getTime() - (30*60*1000))
 }
@@ -60,29 +46,11 @@ const get30MinsBackTime = () => {
 const Measurements = () => {
   const dispatch = useDispatch();
   const {measurementsData, selectedMetrics} = useSelector(getMeasurements);
-  // const selectedMetrics: Array<string> = ["injValveOpen"];
-  // if(!selectedMetrics || selectedMetrics.length == 0) {
-  //   return null;
-  // } 
-  // const [result, setResult] = useState({});
-  // let selMetricsChanged: boolean = false;
   const [time, setTime] = useState(get30MinsBackTime());
   useEffect(() => {
     setTime(get30MinsBackTime());
   }, [selectedMetrics])
 
-  // const fetchData = async () => {
-
-    // let currentSelectedMetrics: any = {
-    //   input: selectedMetrics.map((val) => {
-    //     console.log("selected metrics input")
-    //     return ({
-    //       metricName: val, after: time
-    //     })})
-    // };
-    // const prevSelectedMetrics: Array<string> = usePrevious(currentSelectedMetrics);
-    // const queryInput = compareMetrics(prevSelectedMetrics, selectedMetrics) ? ( prevSelectedMetrics) :  currentSelectedMetrics;
-    // console.log("query input",queryInput.input)
     const [result] = useQuery({
       query,
       variables: {
@@ -92,24 +60,10 @@ const Measurements = () => {
           })})
       }
     });
-    // setResult(result);
-// }
-
-  // const [result] = useQuery({
-  //   query,
-  //   variables: {
-  //     input: selectedMetrics.map((val) => {
-  //       console.log("selected metrics input")
-  //       return ({
-  //       metricName: val, after: (new Date().getTime() - 1800000)
-  //       })})
-  //   },
-  // });
   
   const { fetching, data, error }: any = result;
   useEffect(() => {
     if (error) {
-      console.log("dispatch errors");
       dispatch(actions.measurementsApiErrorReceived({ error: error.message }));
       return;
     }
@@ -117,15 +71,10 @@ const Measurements = () => {
     const { getMultipleMeasurements } = data;
     if(!getMultipleMeasurements || getMultipleMeasurements.length === 0) return;
 
-    console.log("dispatch measurements");
     dispatch(actions.measurementsDataRecevied(getMultipleMeasurements));
-  }, [ dispatch, data, error]);
+  }, [ dispatch, data, error, fetching]);
 
   if (fetching) return <LinearProgress />;
   
   return <EOGCharts multipleMeasurements={measurementsData}/>
 };
-
-const RenderCharts = () => {
-
-}

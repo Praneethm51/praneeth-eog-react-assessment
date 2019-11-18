@@ -1,16 +1,12 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { actions } from './reducer';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { IState } from '../../store';
-import MetricTypes from '../../components/MetricTypes';
-import { Provider, createClient, Client, dedupExchange, fetchExchange, subscriptionExchange, useQuery, useSubscription } from 'urql'
+import { Provider, Client, dedupExchange, fetchExchange, subscriptionExchange, useSubscription } from 'urql'
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import SubscriptionsComponent from '../../components/SubscriptionsComponent';
 
 
-const subscriptionClient = new SubscriptionClient(
-  "wss://react.eogresources.com/graphql",
+const subscriptionClient = new SubscriptionClient("wss://react.eogresources.com/graphql",
   {
     reconnect: true
   }
@@ -38,8 +34,6 @@ subscription {
   }
 `;
 
-// const selectedMetrics = ["injValveOpen", "oilTemp"];
-
 export default () => {
   return (
     <Provider value={client}>
@@ -50,7 +44,6 @@ export default () => {
 
 const latestMeasurementValues: any = {};
 const handleSubscription = (messages : any, response: any): any => {
-  console.log(response, messages);
   return [response.newMeasurement, messages];
 };
 
@@ -71,7 +64,7 @@ const Subscriptions = () => {
   const latestData: any = [];
   Object.keys(latestMeasurementValues).filter((eachKey) => {
     if(selectedMetrics.includes(eachKey)) {
-      latestData.push(<div>{eachKey} : {latestMeasurementValues[eachKey]}</div>);
+      latestData.push(<div key={eachKey}>{eachKey} : {latestMeasurementValues[eachKey]}</div>);
     }
     return false;
   });
