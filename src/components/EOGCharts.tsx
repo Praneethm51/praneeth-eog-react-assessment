@@ -33,9 +33,12 @@ export default (props: any) => {
     return (
         <LineChart width={600} height={300} data={measurementsData}
             margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-            <XAxis dataKey="at"/>
+            <XAxis dataKey="at" tickFormatter={val => `${new Date(val).getHours()}:${new Date(val).getMinutes()}`}/>
             <YAxis/>
-            <Tooltip/>
+            <Tooltip formatter={(value) => {
+                    console.log(value);
+                    return value;
+                }}/>
             <Legend />
             {allMetrics.map((eachMetric: string) => <Line key={eachMetric} type="monotone" dataKey={eachMetric} dot={false} stroke={getRandomColor()}/>) }
     </LineChart>
