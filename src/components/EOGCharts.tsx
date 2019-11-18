@@ -50,7 +50,8 @@ export default (props: any) => {
                     console.log(value);
                     return value;
                 }}/>
-            <Legend />
+            <Legend layout="vertical" 
+            verticalAlign="middle" align="right"/>
             {allMetrics.map((eachMetric: string, index: number) => <Line key={eachMetric} type="monotone" dataKey={eachMetric} dot={false} stroke={getRandomColor(index)}/>) }
     </LineChart>
     )
