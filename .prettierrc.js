@@ -1,4 +1,4 @@
-module.exports = {
+cdmodule.exports = {
   semi: true,
   trailingComma: 'all',
   singleQuote: true,
