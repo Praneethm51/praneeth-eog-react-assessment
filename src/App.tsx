@@ -9,7 +9,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
-import NowWhat from './components/NowWhat';
 import Dashboard from './components/Dashboard';
 
 const store = createStore();
@@ -37,7 +36,6 @@ const App = () => (
     <Provider store={store}>
       <ApolloProvider client={client}>
         <Wrapper>
-          <Header />
           <Dashboard />
           <ToastContainer />
         </Wrapper>
