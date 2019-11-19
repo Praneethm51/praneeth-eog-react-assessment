@@ -5,14 +5,19 @@ const convertData = (measurements: Array<any>) => {
     const eachMeasObj: any = {};
     const total: any = [];
     const allMetrics: Array<string> = [];
-    (measurements && measurements.forEach((value) => {
+    const allUnits: any = [];
+    const unitsMetricsMap: any = {};
+    (measurements && measurements.forEach((value, index) => {
         const meas = value.measurements;
         allMetrics.push(value.metric);
+        allUnits.push(value.measurements[0].unit);
+        unitsMetricsMap[value.metric] = value.measurements[0].unit;
         meas.forEach((eachMeas: any, i: number) => {
             if(!eachMeasObj[eachMeas.at]) {
                 let eachMeasObjAt: any = {};
                 eachMeasObj[eachMeas.at] = eachMeasObjAt;
                 eachMeasObjAt.at = eachMeas.at;
+
                 eachMeasObjAt.time = new Date(eachMeas.at).toLocaleString(undefined, {
                     month: "short", day: "numeric", 
                     hour: "numeric", minute: "numeric"
@@ -23,7 +28,7 @@ const convertData = (measurements: Array<any>) => {
         })
     }));
 
-    return [allMetrics, total];
+    return [allMetrics, total, allUnits, unitsMetricsMap];
 }
   const colorsPallette = ['#006494', "#13293D", "#69140E", "#A44200", "#F2F3AE", "#48E5C2"];
   const getRandomColor = (i:number) => {
@@ -37,7 +42,7 @@ const convertData = (measurements: Array<any>) => {
 
 export default (props: any) => {
 
-    const [allMetrics, measurementsData] = convertData(props.multipleMeasurements);
+    const [allMetrics, measurementsData, allUnits, unitsMetricsMap] = convertData(props.multipleMeasurements);
     if(!measurementsData || measurementsData.length === 0) return null;
     return (
         <LineChart width={600} height={300} data={measurementsData}
@@ -45,14 +50,15 @@ export default (props: any) => {
             <XAxis dataKey="time" tickFormatter={(value)=> {
                 return value && value.split(",")[1].trim();
             }}/>
-            <YAxis/>
+            {allUnits.map((eachUnit: string, i: number) => <YAxis yAxisId={eachUnit} label={{value: eachUnit, position: 'insideTopLeft'}}/>)}
             <Tooltip formatter={(value) => {
                     console.log(value);
                     return value;
                 }}/>
-            <Legend layout="vertical" 
-            verticalAlign="middle" align="right"/>
-            {allMetrics.map((eachMetric: string, index: number) => <Line key={eachMetric} type="monotone" dataKey={eachMetric} dot={false} stroke={getRandomColor(index)}/>) }
+            <Legend layout="vertical" verticalAlign="middle" align="right" />
+            {allMetrics.map((eachMetric: string, index: number) => {
+                return <Line yAxisId={unitsMetricsMap[eachMetric]} key={eachMetric} type="monotone" dataKey={eachMetric} dot={false} stroke={getRandomColor(index)}/>
+            }) }
     </LineChart>
     )
 

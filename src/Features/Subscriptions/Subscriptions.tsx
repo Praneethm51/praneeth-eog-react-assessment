@@ -60,7 +60,7 @@ const Subscriptions = () => {
   if (!res.data) {
     return null;
   }
-  latestMeasurementValues[res.data[0].metric] = res.data[0].value;
+  latestMeasurementValues[res.data[0].metric] = `${res.data[0].value} ${res.data[0].unit}` ;
   const latestData: any = [];
   Object.keys(latestMeasurementValues).filter((eachKey) => {
     if(selectedMetrics.includes(eachKey)) {
