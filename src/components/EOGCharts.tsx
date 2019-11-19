@@ -1,5 +1,5 @@
 import React from "react";
-import {LineChart, Line, XAxis, YAxis, Tooltip, Legend} from "recharts";
+import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, Brush} from "recharts";
 
 const convertData = (measurements: Array<any>) => {
     const eachMeasObj: any = {};
@@ -56,6 +56,7 @@ export default (props: any) => {
                     return value;
                 }}/>
             <Legend layout="vertical" verticalAlign="middle" align="right" />
+            <Brush dataKey="time" height={30} stroke="#8884d8" />
             {allMetrics.map((eachMetric: string, index: number) => {
                 return <Line yAxisId={unitsMetricsMap[eachMetric]} key={eachMetric} type="monotone" dataKey={eachMetric} dot={false} stroke={getRandomColor(index)}/>
             }) }
